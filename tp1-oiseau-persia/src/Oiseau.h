@@ -154,7 +154,8 @@ public:
                 {
                 default:
                 case 1: // une sphère
-                    matrModel.Translate( 0.0, 2.2, 0.0 ); // (bidon) À MODIFIER
+                    matrModel.Translate(position.x, position.y, position.z); // (bidon) À MODIFIER
+                    matrModel.Rotate(angleTete, position.x, position.y, position.z);
                     glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                     afficherSphere();
                     break;
