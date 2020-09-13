@@ -154,8 +154,8 @@ public:
                 {
                 default:
                 case 1: // une sphère
-                    matrModel.Translate(position.x, position.y, position.z); // (bidon) À MODIFIER
-                    matrModel.Rotate(angleTete, position.x, position.y, position.z);
+                    matrModel.Translate(position.x, position.y, position.z);
+                    matrModel.Rotate(angleTete, 0, 0, 1);
                     glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                     afficherSphere();
                     break;
@@ -172,7 +172,19 @@ public:
             glVertexAttrib3f( locColor, 1.0, 1.0, 0.0 ); // jaune
 
             // afficher les yeux
-            //...
+            matrModel.PushMatrix(); {
+                matrModel.Translate(position.x + 2 * taille, position.y, position.z);
+                matrModel.Scale(0.4, 0.4, 0.4);
+                glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+                afficherSphere();
+            }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+
+            matrModel.PushMatrix(); {
+                matrModel.Translate(position.x - 2 * taille, position.y, position.z);
+                matrModel.Scale(0.4, 0.4, 0.4);
+                glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+                afficherSphere();
+            }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
 
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
     }
