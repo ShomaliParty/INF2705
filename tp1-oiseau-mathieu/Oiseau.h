@@ -119,7 +119,7 @@ public:
         // afficher la première partie de l'antenne
         matrModel.PushMatrix(); {
 
-            matrModel.Translate( 0.0, 0.0, 1.0 ); // bidon à modifier
+            matrModel.Translate( 0.0, 0.0, taille ); 
             matrModel.Scale(taille / 3.0, taille / 3.0, taille);
             // ==> Avant de tracer, on doit informer la carte graphique des changements faits à la matrice de modélisation
             glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel );
@@ -130,11 +130,16 @@ public:
         // afficher la seconde partie de l'antenne
         // Procéder comme avec la première partie de l'antenne.
         //...
-        //matrModel.PushMatrix(); {
-        //    //matrModel.Translate(0.0, 0.0, 0.0);
-        //    glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
-        //    afficherCylindre();
-        //}matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        matrModel.PushMatrix(); {
+
+            matrModel.Translate(0.0, 0.0, taille * 2); 
+            matrModel.Rotate(5*angleTete, 0.0, 0.0, 1.0);
+            matrModel.Scale(taille, taille / 3.0, taille / 3.0);
+            // ==> Avant de tracer, on doit informer la carte graphique des changements faits à la matrice de modélisation
+            glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+            afficherCylindre();
+
+        }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
     }
 
     // afficher la tête de l'oiseau
@@ -158,7 +163,9 @@ public:
                 {
                 default:
                 case 1: // une sphère
-                    matrModel.Translate( 0.0, 0.0, 0.0 ); // (bidon) À MODIFIER
+                    matrModel.Scale(taille, taille, taille);
+                    //On a fait le Scale avant d'appeler la fonction 
+                    //afficherAntenne() dans void Afficher()
                     glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                     afficherSphere();
                     break;
@@ -178,12 +185,13 @@ public:
             //...
             matrModel.PushMatrix(); {
                 glVertexAttrib3f(locColor, 1.0, 1.0, 0.0); // jaune
-                const static double tailleYeux = 2.0 * 0.4 * taille;
-                matrModel.Scale(tailleYeux, tailleYeux, tailleYeux);
+                GLfloat tailleYeux = taille * 0.4;
                 matrModel.PushMatrix(); {   //oeil droit
                     //Rotation et deplacement
                     matrModel.Rotate(30, 0.0, 0.0, 1.0);
-                    matrModel.Translate(3.0, 0.0, 0.0);
+                    matrModel.Translate(taille, 0.0, 0.0);
+                    //La variable tailleYeux est declarer a l'exterieur.
+                    matrModel.Scale(tailleYeux, tailleYeux, tailleYeux);
                     //On informe la carte graphique et on affiche.
                     glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                     afficherSphere();
@@ -192,7 +200,9 @@ public:
                 matrModel.PushMatrix(); {   //Oeil gauche
                     //Rotation et deplacement
                     matrModel.Rotate(30, 0.0, 0.0, -1.0);
-                    matrModel.Translate(3.0, 0.0, 0.0);
+                    matrModel.Translate(taille, 0.0, 0.0);
+                    //La variable tailleYeux est declarer a l'exterieur.
+                    matrModel.Scale(tailleYeux, tailleYeux, tailleYeux);
                     //On informe la carte graphique et on affiche.
                     glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
                     afficherSphere();
@@ -210,19 +220,28 @@ public:
         glVertexAttrib3f( locColor, 0.5, 0.5, 1.0 ); // violet
 
         // ajouter une ou des transformations afin de tracer des *ailes carrées*, de la même largeur que le corps
+        
         matrModel.PushMatrix(); {   //Aile 1
             //Rotation et deplacement 
+            //Normalement, on aurait juste mis taille dans y de la fonction translate, mais pour un
+            //decalage etrange, on la rajouter en x
+            matrModel.Translate(-taille, taille, 0.0);
             matrModel.Rotate(angleAile, 1.0, 0.0, 0.0);
-            matrModel.Translate(-0.5, 1.0, 0.0);
+            matrModel.Scale(taille * 2.0, taille * 2.0, 0.0);
             //On informe la carte graphique et on affiche.
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherQuad();
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        
 
         matrModel.PushMatrix(); {   //Aile 2
             //Rotation et deplacement 
-            matrModel.Rotate(angleAile, -1.0, 0.0, 0.0);
-            matrModel.Translate(-0.5, -2.0, 0.0); // (bidon) À MODIFIER
+            matrModel.Rotate(180, 0.0, 0.0, 1.0);
+            //Normalement, on aurait juste mis taille dans y de la fonction translate, mais pour un
+            //decalage etrange, on la rajouter en x
+            matrModel.Translate(-taille, taille, 0.0);
+            matrModel.Rotate(angleAile, 1.0, 0.0, 0.0);
+            matrModel.Scale(taille * 2.0, taille * 2.0, 0.0);
             //On informe la carte graphique et on affiche.
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherQuad();
@@ -244,7 +263,7 @@ public:
         matrModel.PushMatrix();{    //bras droit
             //Rotation et deplacement 
             matrModel.Rotate(angleBras, 0.0, 0.0, -1.0);
-            matrModel.Translate( 0.0, -1.3, -0.1 );
+            matrModel.Translate( 0.0, -taille - longMembre / 2.0, -0.1 );
             matrModel.Rotate(90 - 70, 1.0, 0.0, 0.0);
             matrModel.Scale(largMembre, longMembre, largMembre);
             //On informe la carte graphique et on affiche.
@@ -254,7 +273,7 @@ public:
 
         matrModel.PushMatrix(); {   //bras gauche
             matrModel.Rotate(angleBras, 0.0, 0.0, 1.0);
-            matrModel.Translate(0.0, 1.3, -0.1);
+            matrModel.Translate(0.0, taille + longMembre / 2.0, -0.1);
             matrModel.Rotate(90 - 70, -1.0, 0.0, 0.0);
             matrModel.Scale(largMembre, longMembre, largMembre);
             //On informe la carte graphique et on affiche.
@@ -274,20 +293,20 @@ public:
         // ajouter une ou des transformations afin de tracer les jambes de largeur "largMembre" et longueur "longMembre"
         // les jambes
         // ...
-        matrModel.PushMatrix(); {   //bras gauche
+        matrModel.PushMatrix(); {   //Jambe gauche
             //Rotation et deplacement 
             matrModel.Rotate(60, 1.0, 0.0, 0.0);
-            matrModel.Translate(0.0, -1.3, 0.0);
+            matrModel.Translate(0.0, -taille -longMembre / 2.0, 0.0);
             matrModel.Scale(largMembre, longMembre, largMembre);
             //On informe la carte graphique et on affiche.
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
             afficherCube();
         }matrModel.PopMatrix(); glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
 
-        matrModel.PushMatrix(); {   //bras droite
+        matrModel.PushMatrix(); {   //Jambe droite
             //Rotation et deplacement 
             matrModel.Rotate(60, -1.0, 0.0, 0.0);
-            matrModel.Translate(0.0, 1.3, 0.0);
+            matrModel.Translate(0.0, taille + longMembre / 2.0, 0.0);
             matrModel.Scale(largMembre, longMembre, largMembre);
             //On informe la carte graphique et on affiche.
             glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
