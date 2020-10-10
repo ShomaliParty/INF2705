@@ -374,7 +374,8 @@ public:
         for (std::vector<Theiere*>::iterator it = theieres.begin(); it != theieres.end(); it++)
         {
             std::cout << "couleurSel[0]: " << (*it)->couleurSel[0] << std::endl;
-            if (couleur[0] / (*it)->couleurSel[0])
+            float ratio = couleur[0] / (*it)->couleurSel[0];
+            if (ratio > 0.99 && ratio < 1.01 )
             {
                 std::cout << "true!" << std::endl;
                 (*it)->estSelectionnee = true;
