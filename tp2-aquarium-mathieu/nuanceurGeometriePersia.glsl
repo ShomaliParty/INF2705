@@ -1,10 +1,16 @@
 #version 460
 
 layout(triangles) in;
-layout(triangle_strip, max_vertices = 3) out;
+layout(triangle_strip, max_vertices = 4) out;
 
 
+in Attribs {
+    vec4 couleur;
+} AttribsIn[];
 
+out Attribs {
+    vec4 couleur;
+} AttribsOut;
 
 
 
