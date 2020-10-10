@@ -378,7 +378,14 @@ public:
             if (ratio > 0.99 && ratio < 1.01 )
             {
                 std::cout << "true!" << std::endl;
-                (*it)->estSelectionnee = true;
+                if ((*it)->estSelectionnee) 
+                {
+                    (*it)->estSelectionnee = false;
+                }
+                else 
+                {
+                    (*it)->estSelectionnee = true;
+                }
             }
         }
   
