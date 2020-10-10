@@ -1,0 +1,35 @@
+Q1: Dans l'exemple du cours qui affiche un miroir avec une scène composée
+    d'un cube et de deux cylindres, on doit utiliser un plan de coupe afin
+    de ne pas afficher en avant du miroir le cylindre qui est placé en
+    arrière du miroir. Pourquoi un tel plan de coupe n'est-il pas nécessaire
+    ici alors que les parois de l'aquarium sont toutes des miroirs ?
+
+Parce qu'on affiche les théières qu'à travers les miroirs alors que dans 
+l'exemple du cours, il ne faut pas afficher le cylindre arrière à travers ce 
+miroir, mais en arrière. C'est-à-dire que le cylindre est affiché comme s'il était
+positionné en arrière et non comme un réflextion du miroir. Alors, on découpe
+ce qu'on a pas besoin d'afficher, soit la zone du miroir. 
+Pour les théières, on les affiche si le mask des théières correspond au mask
+du stencil à l'endroit du miroir.
+
+
+Q2: Dans le cadre de ce TP, les réflexions sur les parois sont uniques,
+    c'est-à-dire qu'on n'y voit qu'une seule réflexion : celle du contenu de
+    l'aquarium.  Toutefois, en présence de deux miroirs face à face, on
+    devrait s'attendre à des réflexions multiples, comme illustré dans la
+    figure 10 de l'énoncé. Expliquez succinctement ce qui devrait être fait
+    dans ce TP pour afficher un niveau supplémentaire de réflexion dans
+    chaque miroir, c'est-à-dire afficher la réflexion simple (un seul
+    niveau) d'une paroi dans l'autre qui lui fait face.
+    (On souhaite continuer à utiliser le tampon de stencil, sans s'embarquer
+    à faire du tracé de rayons.)
+    Au total, combien de fois devrait-on alors tracer la scène ?
+
+On trace la scène au centre, puis une 2e fois dans chaque direction (plus loin
+du centre), puis une 3e fois dans chaque direction (encore plus loin). On trace
+2 miroirs invisibles dans chaque direction avec les masques appropriés (1,2,4,8), 
+donc 8 miroirs au total. Les masques selon les direction, Ex: 1 en Ypos,
+2 en Xpos, etc.
+
+Au total, on trace la scène 9 fois. 1 au centre, puis 2 en Xpos, 2 en Xneg, 
+2 en Ypos et 2 en Yneg.
