@@ -23,8 +23,16 @@ void main()
     normale[0] = arete1[1] * arete2[2] - arete1[2] * arete2[1]; 
     normale[1] = arete1[2] * arete2[0] - arete1[0] * arete2[2]; 
     normale[2] = arete1[0] * arete2[1] - arete1[1] * arete2[0]; 
-
+    normale = normalize( normale );
     EmitVertex();
+
+    for ( int i = 0 ; i < gl_in.length() ; ++i )
+    {
+        gl_ViewportIndex = 0;
+        gl_Position = gl_in[i].gl_Position;
+        AttribsOut.couleur = AttribsIn[i].couleur;
+        EmitVertex();
+    }
 
     EndPrimitive();
 
