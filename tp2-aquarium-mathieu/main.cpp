@@ -1,6 +1,6 @@
 // Prénoms, noms et matricule des membres de l'équipe:
-// - Prénom1 NOM1 (matricule1)
-// - Prénom2 NOM2 (matricule2)
+// - Persia SHAHDI (1899707)
+// - Mathieu Bussieres (1882012)
 
 #if defined(_WIN32) || defined(WIN32)
 #pragma warning ( disable : 4244 4305 )
@@ -23,9 +23,9 @@
 #include "Theiere.h"
 #include "Aquarium.h"
 
-static Aquarium *aquarium = NULL;
+static Aquarium* aquarium = NULL;
 
-void calculerPhysique( )
+void calculerPhysique()
 {
     // ajuster le dt selon la fréquence d'affichage
     {
@@ -33,12 +33,12 @@ void calculerPhysique( )
         // obtenir le temps depuis l'initialisation (en millisecondes)
         int tempsCour = FenetreTP::obtenirTemps();
         // calculer un nouveau dt (sauf la première fois)
-        if ( tempsPrec ) Etat::dt = ( tempsCour - tempsPrec )/1000.0;
+        if (tempsPrec) Etat::dt = (tempsCour - tempsPrec) / 1000.0;
         // se préparer pour la prochaine fois
         tempsPrec = tempsCour;
     }
 
-    if ( Etat::enmouvement )
+    if (Etat::enmouvement)
     {
         // static int sensX = -1;
         // Etat::bDim.x += sensX * 0.01;
@@ -50,14 +50,14 @@ void calculerPhysique( )
         // if ( Etat::bDim.y < 10.0 ) sensY = +1;
         // else if ( Etat::bDim.y > 13.0 ) sensY = -1;
 
-        if ( getenv("DEMO") != NULL )
+        if (getenv("DEMO") != NULL)
         {
             camera.theta += 3.0 * Etat::dt;
             camera.verifierAngles();
         }
     }
 
-    aquarium->calculerPhysique( );
+    aquarium->calculerPhysique();
 }
 
 void chargerNuanceurs()
@@ -69,30 +69,30 @@ void chargerNuanceurs()
 
         // attacher le nuanceur de sommets
         {
-            GLuint nuanceurObj = glCreateShader( GL_VERTEX_SHADER );
-            glShaderSource( nuanceurObj, 1, &ProgNuanceur::chainesSommetsMinimal, NULL );
-            glCompileShader( nuanceurObj );
-            glAttachShader( progBase, nuanceurObj );
-            ProgNuanceur::afficherLogCompile( nuanceurObj );
+            GLuint nuanceurObj = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(nuanceurObj, 1, &ProgNuanceur::chainesSommetsMinimal, NULL);
+            glCompileShader(nuanceurObj);
+            glAttachShader(progBase, nuanceurObj);
+            ProgNuanceur::afficherLogCompile(nuanceurObj);
         }
         // attacher le nuanceur de fragments
         {
-            GLuint nuanceurObj = glCreateShader( GL_FRAGMENT_SHADER );
-            glShaderSource( nuanceurObj, 1, &ProgNuanceur::chainesFragmentsMinimal, NULL );
-            glCompileShader( nuanceurObj );
-            glAttachShader( progBase, nuanceurObj );
-            ProgNuanceur::afficherLogCompile( nuanceurObj );
+            GLuint nuanceurObj = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(nuanceurObj, 1, &ProgNuanceur::chainesFragmentsMinimal, NULL);
+            glCompileShader(nuanceurObj);
+            glAttachShader(progBase, nuanceurObj);
+            ProgNuanceur::afficherLogCompile(nuanceurObj);
         }
 
         // faire l'édition des liens du programme
-        glLinkProgram( progBase );
-        ProgNuanceur::afficherLogLink( progBase );
+        glLinkProgram(progBase);
+        ProgNuanceur::afficherLogLink(progBase);
 
         // demander la "Location" des variables
-        if ( ( locColorBase = glGetAttribLocation( progBase, "Color" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de Color" << std::endl;
-        if ( ( locmatrModelBase = glGetUniformLocation( progBase, "matrModel" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrModel" << std::endl;
-        if ( ( locmatrVisuBase = glGetUniformLocation( progBase, "matrVisu" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrVisu" << std::endl;
-        if ( ( locmatrProjBase = glGetUniformLocation( progBase, "matrProj" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrProj" << std::endl;
+        if ((locColorBase = glGetAttribLocation(progBase, "Color")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de Color" << std::endl;
+        if ((locmatrModelBase = glGetUniformLocation(progBase, "matrModel")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrModel" << std::endl;
+        if ((locmatrVisuBase = glGetUniformLocation(progBase, "matrVisu")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrVisu" << std::endl;
+        if ((locmatrProjBase = glGetUniformLocation(progBase, "matrProj")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrProj" << std::endl;
     }
 
     // charger le nuanceur de ce TP
@@ -101,77 +101,77 @@ void chargerNuanceurs()
         prog = glCreateProgram();
 
         // attacher le nuanceur de sommets
-        const GLchar *chainesSommets = ProgNuanceur::lireNuanceur( "nuanceurSommets.glsl" );
-        if ( chainesSommets != NULL )
+        const GLchar* chainesSommets = ProgNuanceur::lireNuanceur("nuanceurSommets.glsl");
+        if (chainesSommets != NULL)
         {
-            GLuint nuanceurObj = glCreateShader( GL_VERTEX_SHADER );
-            glShaderSource( nuanceurObj, 1, &chainesSommets, NULL );
-            glCompileShader( nuanceurObj );
-            glAttachShader( prog, nuanceurObj );
-            ProgNuanceur::afficherLogCompile( nuanceurObj );
-            delete [] chainesSommets;
+            GLuint nuanceurObj = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(nuanceurObj, 1, &chainesSommets, NULL);
+            glCompileShader(nuanceurObj);
+            glAttachShader(prog, nuanceurObj);
+            ProgNuanceur::afficherLogCompile(nuanceurObj);
+            delete[] chainesSommets;
         }
-#if 0
-        // partie 3: enlever le "#if 0" pour utiliser le nuanceur de géométrie
-        const GLchar *chainesGeometrie = ProgNuanceur::lireNuanceur( "nuanceurGeometrie.glsl" );
-        if ( chainesGeometrie != NULL )
+        #if 1
+                // partie 3: enlever le "#if 0" pour utiliser le nuanceur de géométrie
+        const GLchar* chainesGeometrie = ProgNuanceur::lireNuanceur("nuanceurGeometrie.glsl");
+        if (chainesGeometrie != NULL)
         {
-            GLuint nuanceurObj = glCreateShader( GL_GEOMETRY_SHADER );
-            glShaderSource( nuanceurObj, 1, &chainesGeometrie, NULL );
-            glCompileShader( nuanceurObj );
-            glAttachShader( prog, nuanceurObj );
-            ProgNuanceur::afficherLogCompile( nuanceurObj );
-            delete [] chainesGeometrie;
+            GLuint nuanceurObj = glCreateShader(GL_GEOMETRY_SHADER);
+            glShaderSource(nuanceurObj, 1, &chainesGeometrie, NULL);
+            glCompileShader(nuanceurObj);
+            glAttachShader(prog, nuanceurObj);
+            ProgNuanceur::afficherLogCompile(nuanceurObj);
+            delete[] chainesGeometrie;
         }
-#endif
-        // attacher le nuanceur de fragments
-        const GLchar *chainesFragments = ProgNuanceur::lireNuanceur( "nuanceurFragments.glsl" );
-        if ( chainesFragments != NULL )
+        #endif
+                // attacher le nuanceur de fragments
+        const GLchar* chainesFragments = ProgNuanceur::lireNuanceur("nuanceurFragments.glsl");
+        if (chainesFragments != NULL)
         {
-            GLuint nuanceurObj = glCreateShader( GL_FRAGMENT_SHADER );
-            glShaderSource( nuanceurObj, 1, &chainesFragments, NULL );
-            glCompileShader( nuanceurObj );
-            glAttachShader( prog, nuanceurObj );
-            ProgNuanceur::afficherLogCompile( nuanceurObj );
-            delete [] chainesFragments;
+            GLuint nuanceurObj = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(nuanceurObj, 1, &chainesFragments, NULL);
+            glCompileShader(nuanceurObj);
+            glAttachShader(prog, nuanceurObj);
+            ProgNuanceur::afficherLogCompile(nuanceurObj);
+            delete[] chainesFragments;
         }
 
         // faire l'édition des liens du programme
-        glLinkProgram( prog );
-        ProgNuanceur::afficherLogLink( prog );
+        glLinkProgram(prog);
+        ProgNuanceur::afficherLogLink(prog);
 
         // demander la "Location" des variables
-        if ( ( locmatrModel = glGetUniformLocation( prog, "matrModel" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrModel" << std::endl;
-        if ( ( locmatrVisu = glGetUniformLocation( prog, "matrVisu" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrVisu" << std::endl;
-        if ( ( locmatrProj = glGetUniformLocation( prog, "matrProj" ) ) == -1 ) std::cerr << "!!! pas trouvé la \"Location\" de matrProj" << std::endl;
-        if ( ( indLightSource = glGetUniformBlockIndex( prog, "LightSourceParameters" ) ) == GL_INVALID_INDEX ) std::cerr << "!!! pas trouvé l'\"index\" de LightSource" << std::endl;
-        if ( ( indFrontMaterial = glGetUniformBlockIndex( prog, "MaterialParameters" ) ) == GL_INVALID_INDEX ) std::cerr << "!!! pas trouvé l'\"index\" de FrontMaterial" << std::endl;
-        if ( ( indLightModel = glGetUniformBlockIndex( prog, "LightModelParameters" ) ) == GL_INVALID_INDEX ) std::cerr << "!!! pas trouvé l'\"index\" de LightModel" << std::endl;
+        if ((locmatrModel = glGetUniformLocation(prog, "matrModel")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrModel" << std::endl;
+        if ((locmatrVisu = glGetUniformLocation(prog, "matrVisu")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrVisu" << std::endl;
+        if ((locmatrProj = glGetUniformLocation(prog, "matrProj")) == -1) std::cerr << "!!! pas trouvé la \"Location\" de matrProj" << std::endl;
+        if ((indLightSource = glGetUniformBlockIndex(prog, "LightSourceParameters")) == GL_INVALID_INDEX) std::cerr << "!!! pas trouvé l'\"index\" de LightSource" << std::endl;
+        if ((indFrontMaterial = glGetUniformBlockIndex(prog, "MaterialParameters")) == GL_INVALID_INDEX) std::cerr << "!!! pas trouvé l'\"index\" de FrontMaterial" << std::endl;
+        if ((indLightModel = glGetUniformBlockIndex(prog, "LightModelParameters")) == GL_INVALID_INDEX) std::cerr << "!!! pas trouvé l'\"index\" de LightModel" << std::endl;
 
         // charger les ubo (valeurs fixes qui ne varient pas dans ce TP)
         {
-            glBindBuffer( GL_UNIFORM_BUFFER, ubo[0] );
-            glBufferData( GL_UNIFORM_BUFFER, sizeof(LightSource), &LightSource, GL_DYNAMIC_COPY );
-            glBindBuffer( GL_UNIFORM_BUFFER, 0 );
+            glBindBuffer(GL_UNIFORM_BUFFER, ubo[0]);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(LightSource), &LightSource, GL_DYNAMIC_COPY);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
             const GLuint bindingIndex = 0;
-            glBindBufferBase( GL_UNIFORM_BUFFER, bindingIndex, ubo[0] );
-            glUniformBlockBinding( prog, indLightSource, bindingIndex );
+            glBindBufferBase(GL_UNIFORM_BUFFER, bindingIndex, ubo[0]);
+            glUniformBlockBinding(prog, indLightSource, bindingIndex);
         }
         {
-            glBindBuffer( GL_UNIFORM_BUFFER, ubo[1] );
-            glBufferData( GL_UNIFORM_BUFFER, sizeof(FrontMaterial), &FrontMaterial, GL_DYNAMIC_COPY );
-            glBindBuffer( GL_UNIFORM_BUFFER, 0 );
+            glBindBuffer(GL_UNIFORM_BUFFER, ubo[1]);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(FrontMaterial), &FrontMaterial, GL_DYNAMIC_COPY);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
             const GLuint bindingIndex = 1;
-            glBindBufferBase( GL_UNIFORM_BUFFER, bindingIndex, ubo[1] );
-            glUniformBlockBinding( prog, indFrontMaterial, bindingIndex );
+            glBindBufferBase(GL_UNIFORM_BUFFER, bindingIndex, ubo[1]);
+            glUniformBlockBinding(prog, indFrontMaterial, bindingIndex);
         }
         {
-            glBindBuffer( GL_UNIFORM_BUFFER, ubo[2] );
-            glBufferData( GL_UNIFORM_BUFFER, sizeof(LightModel), &LightModel, GL_DYNAMIC_COPY );
-            glBindBuffer( GL_UNIFORM_BUFFER, 0 );
+            glBindBuffer(GL_UNIFORM_BUFFER, ubo[2]);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(LightModel), &LightModel, GL_DYNAMIC_COPY);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
             const GLuint bindingIndex = 2;
-            glBindBufferBase( GL_UNIFORM_BUFFER, bindingIndex, ubo[2] );
-            glUniformBlockBinding( prog, indLightModel, bindingIndex );
+            glBindBufferBase(GL_UNIFORM_BUFFER, bindingIndex, ubo[2]);
+            glUniformBlockBinding(prog, indLightModel, bindingIndex);
         }
     }
 }
@@ -179,20 +179,20 @@ void chargerNuanceurs()
 void FenetreTP::initialiser()
 {
     // donner la couleur de fond
-    glClearColor( 0.1, 0.1, 0.1, 1.0 );
+    glClearColor(0.1, 0.1, 0.1, 1.0);
 
     // activer les états openGL
-    glEnable( GL_DEPTH_TEST );
+    glEnable(GL_DEPTH_TEST);
 
     // activer le mélange de couleur pour la transparence
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // allouer les UBO pour les variables uniformes
-    glGenBuffers( 3, ubo );
+    glGenBuffers(3, ubo);
 
     // charger les nuanceurs
     chargerNuanceurs();
-    glUseProgram( prog );
+    glUseProgram(prog);
 
     // créer l'aquarium
     aquarium = new Aquarium();
@@ -201,37 +201,37 @@ void FenetreTP::initialiser()
 void FenetreTP::conclure()
 {
     delete aquarium;
-    glDeleteBuffers( 3, ubo );
+    glDeleteBuffers(3, ubo);
 }
 
-void FenetreTP::afficherScene( )
+void FenetreTP::afficherScene()
 {
     // effacer les tampons de couleur, de profondeur et de stencil
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-    glUseProgram( progBase );
+    glUseProgram(progBase);
 
     // définir le pipeline graphique
-    matrProj.Perspective( 50.0, (GLdouble) largeur_ / (GLdouble) hauteur_, 0.1, 100.0 );
-    glUniformMatrix4fv( locmatrProjBase, 1, GL_FALSE, matrProj );
+    matrProj.Perspective(50.0, (GLdouble)largeur_ / (GLdouble)hauteur_, 0.1, 100.0);
+    glUniformMatrix4fv(locmatrProjBase, 1, GL_FALSE, matrProj);
 
     camera.definir();
-    glUniformMatrix4fv( locmatrVisuBase, 1, GL_FALSE, matrVisu );
+    glUniformMatrix4fv(locmatrVisuBase, 1, GL_FALSE, matrVisu);
 
     matrModel.LoadIdentity();
-    glUniformMatrix4fv( locmatrModelBase, 1, GL_FALSE, matrModel );
+    glUniformMatrix4fv(locmatrModelBase, 1, GL_FALSE, matrModel);
 
     // afficher les axes
-    if ( Etat::afficheAxes ) FenetreTP::afficherAxes(4);
+    if (Etat::afficheAxes) FenetreTP::afficherAxes(4);
 
     // afficher l'aquarium
     aquarium->afficher();
 
     // sélectionner ?
-    if ( Etat::enSelection )
+    if (Etat::enSelection)
     {
         // sélectionner une théière
-        aquarium->selectionnerTheiere( );
+        aquarium->selectionnerTheiere();
 
         // la sélection a été faite
         Etat::enSelection = false;
@@ -246,14 +246,14 @@ void FenetreTP::afficherScene( )
     }
 }
 
-void FenetreTP::redimensionner( GLsizei w, GLsizei h )
+void FenetreTP::redimensionner(GLsizei w, GLsizei h)
 {
-    glViewport( 0, 0, w, h );
+    glViewport(0, 0, w, h);
 }
 
-void FenetreTP::clavier( TP_touche touche )
+void FenetreTP::clavier(TP_touche touche)
 {
-    switch ( touche )
+    switch (touche)
     {
     case TP_ECHAP:
     case TP_q: // Quitter l'application
@@ -262,7 +262,7 @@ void FenetreTP::clavier( TP_touche touche )
 
     case TP_x: // Activer/désactiver l'affichage des axes
         Etat::afficheAxes = !Etat::afficheAxes;
-        std::cout << "// Affichage des axes ? " << ( Etat::afficheAxes ? "OUI" : "NON" ) << std::endl;
+        std::cout << "// Affichage des axes ? " << (Etat::afficheAxes ? "OUI" : "NON") << std::endl;
         break;
 
     case TP_v: // Recharger les fichiers des nuanceurs et recréer le programme
@@ -275,8 +275,8 @@ void FenetreTP::clavier( TP_touche touche )
         break;
 
     case TP_g: // Permuter l'affichage en fil de fer ou plein
-        Etat::modePolygone = ( Etat::modePolygone == GL_FILL ) ? GL_LINE : GL_FILL;
-        std::cout << " Etat::modePolygone=" << ( Etat::modePolygone == GL_FILL ? "GL_LINE" : "GL_FILL" ) << std::endl;
+        Etat::modePolygone = (Etat::modePolygone == GL_FILL) ? GL_LINE : GL_FILL;
+        std::cout << " Etat::modePolygone=" << (Etat::modePolygone == GL_FILL ? "GL_LINE" : "GL_FILL") << std::endl;
         break;
     case TP_c: // Permuter l'affichage des faces arrières
         Etat::culling = !Etat::culling;
@@ -288,7 +288,7 @@ void FenetreTP::clavier( TP_touche touche )
         std::cout << " Etat::bDim= " << Etat::bDim.x << " x " << Etat::bDim.y << " x " << Etat::bDim.z << std::endl;
         break;
     case TP_GAUCHE: // Diminuer la dimension de la boîte en X
-        if ( Etat::bDim.x > 10.0 ) Etat::bDim.x -= 0.1;
+        if (Etat::bDim.x > 10.0) Etat::bDim.x -= 0.1;
         std::cout << " Etat::bDim= " << Etat::bDim.x << " x " << Etat::bDim.y << " x " << Etat::bDim.z << std::endl;
         break;
     case TP_HAUT: // Augmenter la dimension de la boîte en Y
@@ -296,7 +296,7 @@ void FenetreTP::clavier( TP_touche touche )
         std::cout << " Etat::bDim= " << Etat::bDim.x << " x " << Etat::bDim.y << " x " << Etat::bDim.z << std::endl;
         break;
     case TP_BAS: // Diminuer la dimension de la boîte en Y
-        if ( Etat::bDim.y > 10.0 ) Etat::bDim.y -= 0.1;
+        if (Etat::bDim.y > 10.0) Etat::bDim.y -= 0.1;
         std::cout << " Etat::bDim= " << Etat::bDim.x << " x " << Etat::bDim.y << " x " << Etat::bDim.z << std::endl;
         break;
 
@@ -318,19 +318,19 @@ void FenetreTP::clavier( TP_touche touche )
         break;
 
     default:
-        std::cout << " touche inconnue : " << (char) touche << std::endl;
+        std::cout << " touche inconnue : " << (char)touche << std::endl;
         imprimerTouches();
         break;
     }
 }
 
 static bool presse = false;
-void FenetreTP::sourisClic( int button, int state, int x, int y )
+void FenetreTP::sourisClic(int button, int state, int x, int y)
 {
-    presse = ( state == TP_PRESSE );
-    if ( presse )
+    presse = (state == TP_PRESSE);
+    if (presse)
     {
-        switch ( button )
+        switch (button)
         {
         default:
         case TP_BOUTON_GAUCHE: // Modifier le point de vue
@@ -349,24 +349,24 @@ void FenetreTP::sourisClic( int button, int state, int x, int y )
     }
 }
 
-void FenetreTP::sourisMolette( int x, int y ) // Changer la distance de la caméra
+void FenetreTP::sourisMolette(int x, int y) // Changer la distance de la caméra
 {
     const int sens = +1;
-    camera.dist -= 0.5 * sens*y;
-    if ( camera.dist < 1.0 ) camera.dist = 1.0;
-    else if ( camera.dist > 70.0 - Etat::bDim.y ) camera.dist = 70.0 - Etat::bDim.y;
+    camera.dist -= 0.5 * sens * y;
+    if (camera.dist < 1.0) camera.dist = 1.0;
+    else if (camera.dist > 70.0 - Etat::bDim.y) camera.dist = 70.0 - Etat::bDim.y;
 }
 
-void FenetreTP::sourisMouvement( int x, int y )
+void FenetreTP::sourisMouvement(int x, int y)
 {
-    if ( presse )
+    if (presse)
     {
-        if ( !Etat::enSelection )
+        if (!Etat::enSelection)
         {
             int dx = x - Etat::sourisPosPrec.x;
             int dy = y - Etat::sourisPosPrec.y;
             camera.theta -= dx / 3.0;
-            camera.phi   -= dy / 3.0;
+            camera.phi -= dy / 3.0;
         }
 
         Etat::sourisPosPrec.x = x;
@@ -376,19 +376,19 @@ void FenetreTP::sourisMouvement( int x, int y )
     }
 }
 
-int main( int argc, char *argv[] )
+int main(int argc, char* argv[])
 {
     // créer une fenêtre
-    FenetreTP fenetre( "INF2705 TP" );
+    FenetreTP fenetre("INF2705 TP");
 
     // allouer des ressources et définir le contexte OpenGL
     fenetre.initialiser();
 
     bool boucler = true;
-    while ( boucler )
+    while (boucler)
     {
         // mettre à jour la physique
-        calculerPhysique( );
+        calculerPhysique();
 
         // affichage
         fenetre.afficherScene();

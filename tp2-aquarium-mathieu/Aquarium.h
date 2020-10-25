@@ -9,15 +9,15 @@
 //
 class Aquarium
 {
-    static FormeCube *cubeFil;
-    static FormeQuad *quad;
+    static FormeCube* cubeFil;
+    static FormeQuad* quad;
 
 public:
     Aquarium()
         : locillumination(-1)
     {
         // les hauteurs variées des théières
-        float hauteur[] = {-6.0, 4.0, 3.0, -2.0, -5.0, -3.0, 8.0, 7.0, -1.0, -4.0, -9.9, -7.0, -8.0, 1.0, 5.0, -9.0, 6.0, 2.0};
+        float hauteur[] = { -6.0, 4.0, 3.0, -2.0, -5.0, -3.0, 8.0, 7.0, -1.0, -4.0, -9.9, -7.0, -8.0, 1.0, 5.0, -9.0, 6.0, 2.0 };
 
         // créer un aquarium graphique
         glUseProgram(prog);
@@ -40,10 +40,11 @@ public:
             float taille = glm::mix(0.1, 0.3, rand() / ((double)RAND_MAX));
 
             // créer une nouvelle théière
-            Theiere *p = new Theiere(dist, hauteur[i], angle, vit, taille);
+            Theiere* p = new Theiere(dist, hauteur[i], angle, vit, taille);
 
             // assigner une couleur de sélection
             // partie 2: modifs ici ...
+            p->couleurSel = glm::vec3(1.0 - i / 50.0, 0.0, 0.5);
 
             // ajouter cette théière dans la liste
             theieres.push_back(p);
@@ -199,8 +200,9 @@ public:
     {
         glVertexAttrib4f(locColor, 1.0, 1.0, 1.0, 1.0);
 
-        for (std::vector<Theiere *>::iterator it = theieres.begin(); it != theieres.end(); it++)
+        for (std::vector<Theiere*>::iterator it = theieres.begin(); it != theieres.end(); it++)
         {
+            if (Etat::enSelection) { glVertexAttrib3fv(locColor, glm::value_ptr((*it)->couleurSel)); }
             (*it)->afficher();
         }
     }
@@ -355,6 +357,26 @@ public:
     void selectionnerTheiere()
     {
         // partie 2: modifs ici ...
+        glFinish();
+
+        GLint cloture[4];
+        glGetIntegerv(GL_VIEWPORT, cloture);
+        GLint positionX = Etat::sourisPosPrec.x, positionY = cloture[3] - Etat::sourisPosPrec.y;
+
+        glReadBuffer(GL_BACK);
+
+        GLfloat couleur[3];
+        glReadPixels(positionX, positionY, 1, 1, GL_RGB, GL_FLOAT, couleur);
+
+        for (std::vector<Theiere*>::iterator it = theieres.begin(); it != theieres.end(); it++)
+        {
+            float ratio = couleur[0] / (*it)->couleurSel[0];
+            if (ratio > 0.99 && ratio < 1.01)
+            {
+                (*it)->estSelectionnee = !(*it)->estSelectionnee;
+            }
+        }
+
     }
 
     void calculerPhysique()
@@ -379,7 +401,7 @@ public:
                     sensY = -1;
             }
 
-            for (std::vector<Theiere *>::iterator it = theieres.begin(); it != theieres.end(); it++)
+            for (std::vector<Theiere*>::iterator it = theieres.begin(); it != theieres.end(); it++)
             {
                 (*it)->avancerPhysique();
             }
@@ -389,10 +411,10 @@ public:
     GLint locillumination;
 
     // la liste des théières
-    std::vector<Theiere *> theieres;
+    std::vector<Theiere*> theieres;
 };
 
-FormeCube *Aquarium::cubeFil = NULL;
-FormeQuad *Aquarium::quad = NULL;
+FormeCube* Aquarium::cubeFil = NULL;
+FormeQuad* Aquarium::quad = NULL;
 
 #endif
