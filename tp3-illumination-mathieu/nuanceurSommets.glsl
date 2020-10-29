@@ -51,7 +51,7 @@ layout(location=8) in vec4 TexCoord;
 
 out Attribs {
     vec4 couleur;
-    vec3 normale, lumDir, obsVec;
+    vec3 normale, lumiDir[3], obsVec;
 } AttribsOut;
 
 uniform float temps;
@@ -72,10 +72,14 @@ void main( void )
     AttribsOut.normale = matrNormale * Normal;
 
     // calcul de la position du sommet dans le repère de la caméra
-    vec3 position = (matrVisu * matrModel * Vertex).xyz
+    vec3 pos = (matrVisu * matrModel * Vertex).xyz;
 
     // vecteur de la direction de la lumière
-     AttribsOut.lumiDir = vec3( 0.0, 0.0, 1.0 );
+    for (int i = 0; i < 3; i++) {
+     AttribsOut.lumiDir[i] = (matrVisu * LightSource.position[i]).xyz - pos;
+    }
+
+
 
      // vecteur de la direction observateur
      AttribsOut.obsVec = vec3( 0.0, 0.0, 1.0 );
