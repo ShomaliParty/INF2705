@@ -59,8 +59,24 @@ uniform float temps;
 float attenuation = 1.0;
 vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la lumière j
 {
-    vec4 grisUniforme = vec4(0.7,0.7,0.7,1.0);
-    return( grisUniforme );
+
+    vec4 coul = FrontMaterial.emission;
+
+    coul += FrontMaterial.ambient;
+
+    float NdotL = max( 0.0, dot( N, L ) );
+    if ( NdotL > 0.0 )
+    {
+
+        coul += FrontMaterial.diffuse * NdotL;
+
+        float spec = max( 0.0, ( utiliseBlinn ) ?
+                          dot( normalize( L + O ), N ) : // dot( B, N )
+                          dot( reflect( -L, N ), O ) ); // dot( R, O )
+        if ( spec > 0 ) coul += FrontMaterial.specular * pow( spec, FrontMaterial.shininess );
+    }
+
+    return(coul);
 }
 
 void main( void )
@@ -74,18 +90,27 @@ void main( void )
     // calcul de la position du sommet dans le repère de la caméra
     vec3 pos = (matrVisu * matrModel * Vertex).xyz;
 
+     vec3 L[3];
+
     // vecteur de la direction de la lumière
     for (int i = 0; i < 3; i++) {
-     AttribsOut.lumiDir[i] = (matrVisu * LightSource.position[i]).xyz - pos;
+        AttribsOut.lumiDir[i] = L[i] = (matrVisu * LightSource.position[i]).xyz - pos;
+        L[i] = normalize(L[i]);
     }
-
 
 
      // vecteur de la direction observateur
      AttribsOut.obsVec = vec3( 0.0, 0.0, 1.0 );
 
     // couleur du sommet
+
+    vec3 N = normalize( matrNormale * Normal ); // vecteur normal
+
+    vec3 O = vec3( 0.0, 0.0, 1.0 );  // position de l'observateur
+
     int j = 0;
-    // ... = calculerReflexion( j, L, N, O );
-    AttribsOut.couleur = Color; // à modifier
+    AttribsOut.couleur = calculerReflexion( j, L[j], N, O );
+    for (j = 1; j < 3; j++) {
+       AttribsOut.couleur += calculerReflexion( j, L[j], N, O );
+    }
 }
