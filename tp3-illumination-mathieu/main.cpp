@@ -376,6 +376,7 @@ void FenetreTP::initialiser()
     // GLfloat texcoordsTerre[2*4*6] = ...  // voir figure 15
     // GLfloat texcoordsTerre[2 * 4 * 6] =
     // {
+    //     // Monde
     //     0.200,  0.200,   0.450,  0.200,   0.450,  0.600,   0.200,  0.600,  // Amerique Latine.
     //     0.275,  0.750,   0.350,  0.750,   0.350,  0.850,   0.275,  0.850,  // Quebec, T-N et Labrador.
     //     0.450,  0.300,   0.650,  0.300,   0.650,  0.700,   0.450,  0.700,  // Afrique, Moyen-Orient, Madagascar, etc.
@@ -385,7 +386,7 @@ void FenetreTP::initialiser()
     // GLfloat texcoordsAutre[2*4*6] = ...  // (0,0), (+1,0), etc.
     // GLfloat texcoordsAutre[2*4*6] = 
     // {
-    //     0.0,  0.0,   0.0,  0.0,   0.0,  0.0,   0.0,  0.0,  // (0,0)
+    //     0.0,  0.0,   1.0,  0.0,   1.0,  1.0,   0.0,  1.0,  // (0,0)
     //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // (1,0)
     //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
     //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
@@ -404,10 +405,6 @@ void FenetreTP::initialiser()
     glVertexAttribPointer( locVertex, 3, GL_FLOAT, GL_FALSE, 0, 0 );
     glEnableVertexAttribArray(locVertex);
     // partie 1: charger le VBO pour les normales
-    glm::mat3 matrVM = glm::mat3(matrVisu.getMatr() * matrModel.getMatr());
-    glm::mat3 matrNormale = glm::inverse(matrVM);
-    glUniformMatrix3fv(locmatrNormale, 1, GL_TRUE, // on transpose
-        glm::value_ptr(matrNormale));
     // ...
     glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(normales), normales, GL_STATIC_DRAW);
@@ -495,6 +492,10 @@ void afficherModele()
             // afficher le cube
             glUniformMatrix4fv( locmatrModel, 1, GL_FALSE, matrModel );
             // (partie 1: ne pas oublier de calculer et donner une matrice pour les transformations des normales)
+            glm::mat3 matrVM = glm::mat3(matrVisu.getMatr() * matrModel.getMatr());
+            glm::mat3 matrNormale = glm::inverse(matrVM);
+            glUniformMatrix3fv(locmatrNormale, 1, GL_TRUE, glm::value_ptr(matrNormale)); // on transpose
+
             glBindVertexArray( vao[0] );
             if ( Etat::utiliseTess )
             {

@@ -56,24 +56,29 @@ out Attribs {
 
 uniform float temps;
 
-float attenuation = 1.0;
 vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la lumière j
 {
 
+    float d = length( L );
+
+    float d2 = d * d;
+
+    // float attenuation = 1.0 / d2; // Ne semble pas fonctionner
+    
     vec4 coul = FrontMaterial.emission;
 
-    coul += FrontMaterial.ambient;
+    coul += FrontMaterial.ambient * LightSource.ambient[j];
 
     float NdotL = max( 0.0, dot( N, L ) );
     if ( NdotL > 0.0 )
     {
 
-        coul += FrontMaterial.diffuse * NdotL;
+        coul += LightSource.diffuse[j] * FrontMaterial.diffuse * NdotL;
 
         float spec = max( 0.0, ( utiliseBlinn ) ?
                           dot( normalize( L + O ), N ) : // dot( B, N )
                           dot( reflect( -L, N ), O ) ); // dot( R, O )
-        if ( spec > 0 ) coul += FrontMaterial.specular * pow( spec, FrontMaterial.shininess );
+        if ( spec > 0 ) coul += LightSource.specular[j] * FrontMaterial.specular * pow( spec, FrontMaterial.shininess );
     }
 
     return(coul);
