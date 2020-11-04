@@ -37,34 +37,21 @@ layout (std140) uniform varsUnif
     int iTexNorm;             // numéro de la texture de normales appliquée
 };
 
-uniform mat4 matrModel;
-uniform mat4 matrVisu;
-uniform mat4 matrProj;
-uniform mat3 matrNormale;
+uniform sampler2D laTextureCoul;
+uniform sampler2D laTextureNorm;
 
 /////////////////////////////////////////////////////////////////
 
-layout(location=0) in vec4 Vertex;
-layout(location=2) in vec3 Normal;
-layout(location=3) in vec4 Color;
-layout(location=8) in vec4 TexCoord;
-
-out Attribs {
+in Attribs {
     vec4 couleur;
     vec3 normale, lumiDir[3], obsVec;
-} AttribsOut;
+} AttribsIn;
 
-uniform float temps;
+out vec4 FragColor;
 
+float attenuation = 1.0;
 vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la lumière j
 {
-
-    float d = length( L );
-
-    float d2 = d * d;
-
-    // float attenuation = 1.0 / d2; // Ne semble pas fonctionner
-    
     vec4 coul = FrontMaterial.emission;
 
     coul += FrontMaterial.ambient * LightSource.ambient[j];
@@ -86,36 +73,31 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
 
 void main( void )
 {
-    // transformation standard du sommet
-    gl_Position = matrProj * matrVisu * matrModel * Vertex;
 
-    // calcul de la normale
-    AttribsOut.normale = matrNormale * Normal;
+    if(typeIllumination == 1) { // Phong
+        vec4 coul;
+        // ...
+        // couleur du sommet
+        if(typeIllumination == 1) {
 
-    // calcul de la position du sommet dans le repère de la caméra
-    vec3 pos = (matrVisu * matrModel * Vertex).xyz;
+            vec3 L[3];
+            vec3 N = normalize(AttribsIn.normale); // vecteur normal
+            vec3 O = vec3( 0.0, 0.0, 1.0 );  // position de l'observateur
 
-     vec3 L[3];
-
-    // vecteur de la direction de la lumière
-    for (int i = 0; i < 3; i++) {
-        AttribsOut.lumiDir[i] = L[i] = (matrVisu * LightSource.position[i]).xyz - pos;
-        L[i] = normalize(L[i]);
+            int j = 0;
+            L[j] = normalize(AttribsIn.lumiDir[j]);
+            coul = calculerReflexion( j, L[j], N, O );
+            for (j = 1; j < 3; j++) {
+                L[j] = normalize(AttribsIn.lumiDir[j]);
+                coul += calculerReflexion( j, L[j], N, O );
+            }
+        }
+        FragColor = clamp( coul, 0.0, 1.0 );
+    }
+    else {  // Gouraud
+        FragColor = clamp( AttribsIn.couleur, 0.0, 1.0 );    
     }
 
-
-     // vecteur de la direction observateur
-     AttribsOut.obsVec = vec3( 0.0, 0.0, 1.0 );
-
-    // couleur du sommet
-
-    vec3 N = normalize( matrNormale * Normal ); // vecteur normal
-
-    vec3 O = vec3( 0.0, 0.0, 1.0 );  // position de l'observateur
-
-    int j = 0;
-    AttribsOut.couleur = calculerReflexion( j, L[j], N, O );
-    for (j = 1; j < 3; j++) {
-       AttribsOut.couleur += calculerReflexion( j, L[j], N, O );
-    }
+    // FragColor = 0.01*AttribsIn.couleur + vec4( 0.5, 0.5, 0.5, 1.0 ); // gris moche!
+    //if ( afficheNormales ) FragColor = clamp( vec4( (N+1)/2, AttribsIn.couleur.a ), 0.0, 1.0 );
 }
