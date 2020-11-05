@@ -75,7 +75,7 @@ void main( void )
 {
 
     if(typeIllumination == 1) { // Phong
-        vec4 coul;
+        vec4 coul = vec4(0.0, 0.0, 0.0, 0.0);           // initialization par défaut
         // ...
         // couleur du sommet
         if(typeIllumination == 1) {
