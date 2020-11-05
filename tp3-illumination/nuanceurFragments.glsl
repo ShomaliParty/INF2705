@@ -45,6 +45,7 @@ uniform sampler2D laTextureNorm;
 in Attribs {
     vec4 couleur;
     vec3 normale, lumiDir[3], obsVec;
+    vec2 texCoord;
 } AttribsIn;
 
 out vec4 FragColor;
@@ -73,7 +74,8 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
 
 void main( void )
 {
-
+    vec4 coulText = texture(laTextureCoul, AttribsIn.texCoord);
+    vec4 couleurFinal;
     if(typeIllumination == 1) { // Phong
         vec4 coul;
         // ...
@@ -92,11 +94,13 @@ void main( void )
                 coul += calculerReflexion( j, L[j], N, O );
             }
         }
-        FragColor = clamp( coul, 0.0, 1.0 );
+        couleurFinal = clamp( coul, 0.0, 1.0 );
     }
     else {  // Gouraud
-        FragColor = clamp( AttribsIn.couleur, 0.0, 1.0 );    
+        couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
     }
+
+    FragColor = couleurFinal * coulText;
 
     // FragColor = 0.01*AttribsIn.couleur + vec4( 0.5, 0.5, 0.5, 1.0 ); // gris moche!
     //if ( afficheNormales ) FragColor = clamp( vec4( (N+1)/2, AttribsIn.couleur.a ), 0.0, 1.0 );

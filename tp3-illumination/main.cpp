@@ -374,25 +374,25 @@ void FenetreTP::initialiser()
         0.0, -1.0,  0.0,   0.0, -1.0,  0.0,   0.0, -1.0,  0.0,   0.0, -1.0,  0.0,  // (0,-1,0) -Y
     };
     // GLfloat texcoordsTerre[2*4*6] = ...  // voir figure 15
-    // GLfloat texcoordsTerre[2 * 4 * 6] =
-    // {
-    //     // Monde
-    //     0.200,  0.200,   0.450,  0.200,   0.450,  0.600,   0.200,  0.600,  // Amerique Latine.
-    //     0.275,  0.750,   0.350,  0.750,   0.350,  0.850,   0.275,  0.850,  // Quebec, T-N et Labrador.
-    //     0.450,  0.300,   0.650,  0.300,   0.650,  0.700,   0.450,  0.700,  // Afrique, Moyen-Orient, Madagascar, etc.
-    //     0.450,  0.700,   0.550,  0.700,   0.550,  0.825,   0.450,  0.825,  // Europe sans Russie.
-    //     0.800,  0.250,   0.950,  0.250,   0.950,  0.450,   0.800,  0.450,  // Australie.
-    // };
+     GLfloat texcoordsTerre[2 * 4 * 6] =
+     {
+         0.000,  0.000,   1.000,  0.000,   0.000,  1.000,   1.000,  1.000,  // Le monde. 3x
+         0.200,  0.200,   0.450,  0.200,   0.200,  0.600,   0.450,  0.600,  // Amerique du Sud.
+         0.275,  0.750,   0.350,  0.750,   0.275,  0.850,   0.350,  0.850,  // Quebec, T-N et Labrador.
+         0.450,  0.300,   0.650,  0.300,   0.450,  0.700,   0.650,  0.700,  // Afrique, Moyen-Orient, Madagascar, etc.
+         0.450,  0.700,   0.550,  0.700,   0.450,  0.825,   0.550,  0.825,  // Europe sans Russie.
+         0.800,  0.250,   0.950,  0.250,   0.800,  0.450,   0.950,  0.450,  // Australie.
+     };
     // GLfloat texcoordsAutre[2*4*6] = ...  // (0,0), (+1,0), etc.
-    // GLfloat texcoordsAutre[2*4*6] = 
-    // {
-    //     0.0,  0.0,   1.0,  0.0,   1.0,  1.0,   0.0,  1.0,  // (0,0)
-    //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // (1,0)
-    //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
-    //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
-    //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
-    //     1.0,  0.0,   1.0,  0.0,   1.0,  0.0,   1.0,  0.0,  // ????
-    // };
+    GLfloat texcoordsAutre[2*4*6] = 
+    {
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+        0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
+    };
     // allouer les objets OpenGL
     glGenVertexArrays( 2, vao );
     glGenBuffers( 4, vbo );
@@ -413,16 +413,16 @@ void FenetreTP::initialiser()
     // partie 2: charger les deux VBO pour les coordonnées de texture: celle pour la Terre sur le cube et pour les autres textures
     // ...
     // Pour texcoordsTerre.
-    // glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(texcoordsTerre), texcoordsTerre, GL_STATIC_DRAW);
-    // glVertexAttribPointer(locTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // glEnableVertexAttribArray(locTexCoord);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texcoordsTerre), texcoordsTerre, GL_STATIC_DRAW);
+    glVertexAttribPointer(locTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(locTexCoord);
 
     // Pour texcoordsAutre.
-    // glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(texcoordsAutre), texcoordsAutre, GL_STATIC_DRAW);
-    // glVertexAttribPointer(locTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // glEnableVertexAttribArray(locTexCoord);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texcoordsAutre), texcoordsAutre, GL_STATIC_DRAW);
+    glVertexAttribPointer(locTexCoord, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(locTexCoord);
 
     glBindVertexArray(0);
 
@@ -467,16 +467,16 @@ void FenetreTP::conclure()
 void afficherModele()
 {
     // partie 2: paramètres de texture
-    //glActiveTexture( GL_TEXTURE0 ); // l'unité de texture 0
-    //if ( varsUnif.iTexCoul )
-    //    glBindTexture( GL_TEXTURE_2D, texturesCoul[varsUnif.iTexCoul-1] );
-    //else
-    //    glBindTexture( GL_TEXTURE_2D, 0 );
-    //glActiveTexture( GL_TEXTURE1 ); // l'unité de texture 1
-    //if ( varsUnif.iTexNorm )
-    //    glBindTexture( GL_TEXTURE_2D, texturesNorm[varsUnif.iTexNorm-1] );
-    //else
-    //    glBindTexture( GL_TEXTURE_2D, 0 );
+    glActiveTexture( GL_TEXTURE0 ); // l'unité de texture 0
+    if ( varsUnif.iTexCoul )
+        glBindTexture( GL_TEXTURE_2D, texturesCoul[varsUnif.iTexCoul-1] );
+    else
+        glBindTexture( GL_TEXTURE_2D, 0 );
+    glActiveTexture( GL_TEXTURE1 ); // l'unité de texture 1
+    if ( varsUnif.iTexNorm )
+        glBindTexture( GL_TEXTURE_2D, texturesNorm[varsUnif.iTexNorm-1] );
+    else
+        glBindTexture( GL_TEXTURE_2D, 0 );
 
     // Dessiner le modèle
     matrModel.PushMatrix(); {

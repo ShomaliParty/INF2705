@@ -52,6 +52,7 @@ layout(location=8) in vec4 TexCoord;
 out Attribs {
     vec4 couleur;
     vec3 normale, lumiDir[3], obsVec;
+    vec2 texCoord;
 } AttribsOut;
 
 uniform float temps;
@@ -122,4 +123,5 @@ void main( void )
            AttribsOut.couleur += calculerReflexion( j, L[j], N, O );
         }
     }
+    AttribsOut.texCoord = TexCoord.st;
 }
