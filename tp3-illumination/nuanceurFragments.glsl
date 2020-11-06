@@ -77,7 +77,7 @@ void main( void )
     vec4 coulText = texture(laTextureCoul, AttribsIn.texCoord);
     vec4 couleurFinal;
     if(typeIllumination == 1) { // Phong
-        vec4 coul = vec4(0.0, 0.0, 0.0, 0.0);           // initialization par défaut
+        vec4 coul;
         // ...
         // couleur du sommet
         if(typeIllumination == 1) {
@@ -99,8 +99,12 @@ void main( void )
     else {  // Gouraud
         couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
     }
-
-    FragColor = couleurFinal * coulText;
+    FragColor = couleurFinal;
+    if(iTexCoul != 0) {
+        FragColor *= coulText;
+        if(length(coulText.rgb) < 0.5) discard;
+    }
+    // if(length(coulText.rgb) < 0.5) discard;
 
     // FragColor = 0.01*AttribsIn.couleur + vec4( 0.5, 0.5, 0.5, 1.0 ); // gris moche!
     //if ( afficheNormales ) FragColor = clamp( vec4( (N+1)/2, AttribsIn.couleur.a ), 0.0, 1.0 );

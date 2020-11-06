@@ -123,5 +123,8 @@ void main( void )
            AttribsOut.couleur += calculerReflexion( j, L[j], N, O );
         }
     }
-    AttribsOut.texCoord = TexCoord.st;
+    // Application de la translation.
+    vec2 translation = vec2(- 0.1 * temps, 0.0);
+    // Application des textures.
+    AttribsOut.texCoord = TexCoord.st + translation;
 }
