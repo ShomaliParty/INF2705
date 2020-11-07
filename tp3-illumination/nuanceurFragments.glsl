@@ -72,6 +72,13 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
     return(coul);
 }
 
+vec3 modifierNormale( in vec3 N ) {
+    // Application de la texture de relief.
+    vec3 coulText2 = texture(laTextureNorm, AttribsIn.texCoord).rgb;
+    vec3 dN = normalize((coulText2));
+    return normalize(N + dN);
+}
+
 void main( void )
 {
     vec4 coulText = texture(laTextureCoul, AttribsIn.texCoord);
@@ -83,7 +90,11 @@ void main( void )
         if(typeIllumination == 1) {
 
             vec3 L[3];
-            vec3 N = normalize(AttribsIn.normale); // vecteur normal
+            vec3 N; // vecteur normal
+            N = AttribsIn.normale;
+            if(iTexNorm != 0) N = modifierNormale(N);
+            // N = normalize(AttribsIn.normale);
+            else N = normalize(N);
             vec3 O = vec3( 0.0, 0.0, 1.0 );  // position de l'observateur
 
             int j = 0;
@@ -97,13 +108,24 @@ void main( void )
         couleurFinal = clamp( coul, 0.0, 1.0 );
     }
     else {  // Gouraud
-        couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
+        if(iTexNorm != 0){
+            // Application de la texture de relief.
+            vec4 coulText2 = texture(laTextureNorm, AttribsIn.texCoord);
+            couleurFinal = clamp( AttribsIn.couleur * coulText2, 0.0, 1.0 );    
+        }
+        else {
+            couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
+        }
     }
     FragColor = couleurFinal;
     if(iTexCoul != 0) {
         FragColor *= coulText;
         if(length(coulText.rgb) < 0.5) discard;
     }
+    // if(iTexNorm != 0) {
+    //     FragColor *= coulText2;
+    //     if(length(coulText.rgb) < 0.5) discard;
+    // }
     // if(length(coulText.rgb) < 0.5) discard;
 
     // FragColor = 0.01*AttribsIn.couleur + vec4( 0.5, 0.5, 0.5, 1.0 ); // gris moche!
