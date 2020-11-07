@@ -507,10 +507,10 @@ void afficherModele()
 
             glBindVertexArray(vao[0]);
             if (varsUnif.iTexCoul == 1) {
-               glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+                glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
             }
             else {
-               glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
+                glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
             }
 
             glVertexAttribPointer(locTexCoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -519,6 +519,9 @@ void afficherModele()
             if (Etat::utiliseTess)
             {
                 // partie 3: afficher le cube avec des GL_PATCHES
+                GLint nconnect = 4;
+                glDrawElements(GL_PATCHES, nconnect, GL_UNSIGNED_INT, 0);
+                glDrawArrays(GL_PATCHES, 0, 4);
             }
             else
             {
