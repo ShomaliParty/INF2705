@@ -75,7 +75,8 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
 vec3 modifierNormale( in vec3 N ) {
     // Application de la texture de relief.
     vec3 coulText2 = texture(laTextureNorm, AttribsIn.texCoord).rgb;
-    vec3 dN = normalize((coulText2));
+    vec3 dN = normalize((coulText2 - 0.5) * 2.0);
+    // N = normalize(N);
     return normalize(N + dN);
 }
 
@@ -92,9 +93,9 @@ void main( void )
             vec3 L[3];
             vec3 N; // vecteur normal
             N = AttribsIn.normale;
+            N = normalize(AttribsIn.normale);
             if(iTexNorm != 0) N = modifierNormale(N);
-            // N = normalize(AttribsIn.normale);
-            else N = normalize(N);
+            // else N = normalize(N);
             vec3 O = vec3( 0.0, 0.0, 1.0 );  // position de l'observateur
 
             int j = 0;

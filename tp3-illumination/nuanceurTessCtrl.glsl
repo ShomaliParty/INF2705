@@ -1,6 +1,6 @@
 #version 410
 
-layout(vertices = 3) out;
+layout(vertices = 4) out;
 
 uniform float TessLevelInner;
 uniform float TessLevelOuter;
@@ -25,14 +25,13 @@ void main(void) {
 
     if (gl_InvocationID == 0) {
         gl_TessLevelInner[0] = TessLevelInner;
+        gl_TessLevelInner[1] = TessLevelInner;
         gl_TessLevelOuter[0] = TessLevelOuter;
         gl_TessLevelOuter[1] = TessLevelOuter;
         gl_TessLevelOuter[2] = TessLevelOuter;
+        gl_TessLevelOuter[3] = TessLevelOuter;
     }
 
-    AttribsOut[gl_InvocationID].couleur = AttribsIn[gl_InvocationID].couleur;
-
-    
     for (int i = 0; i < 3; i++) {
         AttribsOut[gl_InvocationID].lumiDir[i] = AttribsIn[gl_InvocationID].lumiDir[i];
     }
