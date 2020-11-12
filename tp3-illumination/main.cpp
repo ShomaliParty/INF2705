@@ -210,7 +210,7 @@ void chargerNuanceurs()
         prog = glCreateProgram();
 
         // attacher le nuanceur de sommets
-        const GLchar* chainesSommets = ProgNuanceur::lireNuanceur("nuanceurSommets.glsl");
+        const GLchar* chainesSommets = ProgNuanceur::lireNuanceur( Etat::utiliseTess ? "nuanceurSommetsTesselation.glsl" : "nuanceurSommets.glsl");
         if (chainesSommets != NULL)
         {
             GLuint nuanceurObj = glCreateShader(GL_VERTEX_SHADER);
