@@ -63,8 +63,6 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
     float d = length( L );
 
     float d2 = d * d;
-
-    // float attenuation = 1.0 / d2; // Ne semble pas fonctionner
     
     vec4 coul = FrontMaterial.emission;
 
