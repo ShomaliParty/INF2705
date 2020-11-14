@@ -123,12 +123,4 @@ void main( void )
         FragColor *= coulText;
         if(length(coulText.rgb) < 0.5) discard;
     }
-    // if(iTexNorm != 0) {
-    //     FragColor *= coulText2;
-    //     if(length(coulText.rgb) < 0.5) discard;
-    // }
-    // if(length(coulText.rgb) < 0.5) discard;
-
-    // FragColor = 0.01*AttribsIn.couleur + vec4( 0.5, 0.5, 0.5, 1.0 ); // gris moche!
-    //if ( afficheNormales ) FragColor = clamp( vec4( (N+1)/2, AttribsIn.couleur.a ), 0.0, 1.0 );
 }
