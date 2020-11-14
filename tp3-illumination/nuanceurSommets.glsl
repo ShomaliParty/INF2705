@@ -107,10 +107,7 @@ void main( void )
 
      // vecteur de la direction observateur
      AttribsOut.obsVec = vec3( 0.0, 0.0, 1.0 );
-
-    // A partir d'ici, c'est uniquement Gouraud, le code plus haut est utiliser
-    // dans le cas des deux modele, Gouraud et Phong.
-
+     
     // couleur du sommet
     if(typeIllumination == 0) {
         vec3 N = normalize( normale ); // vecteur normal
