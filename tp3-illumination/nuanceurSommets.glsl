@@ -58,12 +58,7 @@ out Attribs {
 uniform float temps;
 
 vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la lumière j
-{
-
-    float d = length( L );
-
-    float d2 = d * d;
-    
+{   
     vec4 coul = FrontMaterial.emission;
 
     coul += FrontMaterial.ambient * LightSource.ambient[j];
