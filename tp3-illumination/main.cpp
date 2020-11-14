@@ -370,7 +370,7 @@ void FenetreTP::initialiser()
         0.9, -0.9,  0.9,  -0.9, -0.9,  0.9,   0.9, -0.9, -0.9,  -0.9, -0.9, -0.9,  // P5,P4,P1,P0 -Y
     };
 
-    // GLfloat normales[3*4*6] = ...        // (0,+1,0), ... (0,0,-1), ... (+1,0,0), etc.
+   
     GLfloat normales[3 * 4 * 6] = // Partie qu'on a ajouter pour les normales, une par sommet.
     {
         0.0,  1.0,  0.0,   0.0,  1.0,  0.0,   0.0,  1.0,  0.0,   0.0,  1.0,  0.0,  // (0,+1,0) +Y
@@ -380,7 +380,7 @@ void FenetreTP::initialiser()
        -1.0,  0.0,  0.0,  -1.0,  0.0,  0.0,  -1.0,  0.0,  0.0,  -1.0,  0.0,  0.0,  // (-1,0,0) -X
         0.0, -1.0,  0.0,   0.0, -1.0,  0.0,   0.0, -1.0,  0.0,   0.0, -1.0,  0.0,  // (0,-1,0) -Y
     };
-    // GLfloat texcoordsTerre[2*4*6] = ...  // voir figure 15
+ 
 
 
     GLfloat texcoordsTerre[2 * 4 * 6] =
@@ -392,7 +392,7 @@ void FenetreTP::initialiser()
         0.450,  0.700,   0.550,  0.700,   0.450,  0.825,   0.550,  0.825,  // Europe sans Russie.
         0.800,  0.250,   0.950,  0.250,   0.800,  0.450,   0.950,  0.450,  // Australie.
     };
-    // GLfloat texcoordsAutre[2*4*6] = ...  // (0,0), (+1,0), etc.
+
     GLfloat texcoordsAutre[2 * 4 * 6] =
     {
         0.0,  0.0,   1.0,  0.0,   0.0,  1.0,   1.0,  1.0,  // (0,0) (1,0) (0,1) (1,1)
