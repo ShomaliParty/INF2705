@@ -16,8 +16,7 @@ out Attribs {
 } AttribsOut;
 
 
-vec4 interpole(vec4 v0, vec4 v1, vec4 v2, vec4 v3){
-    // return (gl_TessCoord.x * v0 + gl_TessCoord.y * v1 + gl_TessCoord.z * v2);
+vec4 interpole(vec4 v0, vec4 v1, vec4 v2, vec4 v3) {
     vec4 v01 = mix( v0, v1, gl_TessCoord.x );
     vec4 v32 = mix( v3, v2, gl_TessCoord.x );
     return mix( v01, v32, gl_TessCoord.y );
