@@ -109,15 +109,9 @@ void main( void )
         couleurFinal = clamp( coul, 0.0, 1.0 );
     }
     else {  // Gouraud
-        if(iTexNorm != 0){
-            // Application de la texture de relief.
-            vec4 coulText2 = texture(laTextureNorm, AttribsIn.texCoord);
-            couleurFinal = clamp( AttribsIn.couleur * coulText2, 0.0, 1.0 );    
-        }
-        else {
-            couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
-        }
+        couleurFinal = clamp( AttribsIn.couleur, 0.0, 1.0 );    
     }
+    
     FragColor = couleurFinal;
     if(iTexCoul != 0) {
         FragColor *= coulText;
