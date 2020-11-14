@@ -63,8 +63,6 @@ vec4 calculerReflexion( in int j, in vec3 L, in vec3 N, in vec3 O ) // pour la l
     float d = length( L );
 
     float d2 = d * d;
-
-    // float attenuation = 1.0 / d2; // Ne semble pas fonctionner
     
     vec4 coul = FrontMaterial.emission;
 
@@ -107,9 +105,6 @@ void main( void )
 
      // vecteur de la direction observateur
      AttribsOut.obsVec = vec3( 0.0, 0.0, 1.0 );
-
-    // A partir d'ici, c'est uniquement Gouraud, le code plus haut est utiliser
-    // dans le cas des deux modele, Gouraud et Phong.
 
     // couleur du sommet
     if(typeIllumination == 0) {
