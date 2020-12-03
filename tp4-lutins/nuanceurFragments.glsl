@@ -23,7 +23,7 @@ void main( void )
     if ( texnumero != 0 ) {
         vec4 texel = texture( leLutin, AttribsIn.texCoord );
         // FragColor *= texel;
-        FragColor = vec4( mix( AttribsIn.couleur.rgb, texel.rgb, 0.6 ), texel.a );
+        FragColor = vec4( mix( AttribsIn.couleur.rgb, texel.rgb, 0.6 ), AttribsIn.couleur.a );
         if( texel.a < 0.1 ) discard;
     }
 }
