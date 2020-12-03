@@ -53,7 +53,7 @@ void main( void )
         ColorMod = vec4( mix( COULMIN, COULMAX, myrandom(seed++) ),   // entre 0.2 et 0.9
                          mix( COULMIN, COULMAX, myrandom(seed++) ),   // entre 0.2 et 0.9
                          mix( COULMIN, COULMAX, myrandom(seed++) ),   // entre 0.2 et 0.9
-                         mix( COULMIN, COULMAX, myrandom(seed++) ) ); // entre 0.2 et 0.9
+                         1); // Opaciter pleine au depart
     }
     else
     {
@@ -85,12 +85,14 @@ void main( void )
         // hauteur minimale à laquelle une collision avec le plancher survient
         const float hauteurPlancher = 3.0;
         // ...
-        if ( VertexMod.z < 3.0 ) { 
+        if ( VertexMod.z <= hauteurPlancher ) { 
             VertexMod.z = hauteurPlancher;
+            vitesseMod.z = - vitesseMod.z;
         }
 
         // appliquer la gravité
         // ...
+        vitesseMod.z = vitesseMod.z - gravite * dt;
     }
 
     // Mettre un test bidon afin que l'optimisation du compilateur n'élimine pas les attributs dt, gravite, tempsDeVieMax posPuits et bDim.
