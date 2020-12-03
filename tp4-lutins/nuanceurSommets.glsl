@@ -15,7 +15,7 @@ out Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
     //float sens; // du vol (partie 3)
-    //float hauteur; // du vol (partie 3)
+    float hauteur; // du vol (partie 3)
 } AttribsOut;
 
 void main( void )
@@ -24,6 +24,8 @@ void main( void )
     gl_Position = matrVisu * matrModel * Vertex;
 
     AttribsOut.tempsDeVieRestant = tempsDeVieRestant;
+
+    AttribsOut.hauteur = Vertex.z;
 
     // couleur du sommet
     AttribsOut.couleur = Color;

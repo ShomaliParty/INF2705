@@ -79,6 +79,7 @@ void main( void )
             vec3 N = posSphUnitaire / dist;
             vec3 visReflechieSphUnitaire = reflect( vitSphUnitaire, N );
             vitesseMod = visReflechieSphUnitaire / bDim;
+            vitesseMod = vitesseMod / 2.0;
         }
 
         // collision avec le sol ?
@@ -88,6 +89,7 @@ void main( void )
         if ( VertexMod.z <= hauteurPlancher ) { 
             VertexMod.z = hauteurPlancher;
             vitesseMod.z = - vitesseMod.z;
+            vitesseMod = vitesseMod / 2.0;
         }
 
         // appliquer la gravité

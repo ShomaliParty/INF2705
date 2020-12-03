@@ -13,7 +13,7 @@ in Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
     //float sens; // du vol (partie 3)
-    //float hauteur; // du vol (partie 3)
+    float hauteur; // du vol (partie 3)
 } AttribsIn[];
 
 out Attribs {
@@ -53,7 +53,7 @@ void main()
         vec2 decalage = coins[i];
         vec4 pos = vec4( gl_in[0].gl_Position.xy + fact * decalage, gl_in[0].gl_Position.zw );
 
-        if ( texnumero == 1 ) {
+        if ( texnumero == 1 && AttribsIn[0].hauteur >= hauteurInerte) {
             float dt = 3.0 * AttribsIn[0].tempsDeVieRestant;
             mat2 rotation = mat2(  cos(dt), sin(dt),
                                    -sin(dt), cos(dt)
