@@ -68,11 +68,16 @@ void main()
         AttribsOut.couleur = AttribsIn[0].couleur;
         if ( texnumero == 2 ) {
             const float nlutins = 16.0;
-            int num = int( mod( 18.0 * AttribsIn[0].tempsDeVieRestant, nlutins ) );
+            int num = 0;
+            if ( AttribsIn[0].hauteur >= hauteurInerte ) {
+                num = int( mod( 18.0 * AttribsIn[0].tempsDeVieRestant, nlutins ) );
+            } else {
+                num = 3;
+            }
             AttribsOut.texCoord.x = ( AttribsOut.texCoord.x + num ) / nlutins;
         }
 
-        
+        // if( tempsDeVieRestant <= 5.0 )
             
         EmitVertex();
     }
