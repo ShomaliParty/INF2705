@@ -14,7 +14,7 @@ layout(location=5) in float tempsDeVieRestant;
 out Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
-    //float sens; // du vol (partie 3)
+    float sens; // du vol (partie 3)
     float hauteur; // du vol (partie 3)
 } AttribsOut;
 
@@ -27,6 +27,10 @@ void main( void )
 
     AttribsOut.hauteur = Vertex.z;
 
+    vec3 vitesseTemp = mat3(matrVisu) * mat3(matrModel) * vitesse;
+
+    AttribsOut.sens = sign(vitesseTemp.x);
+
     // couleur du sommet
     AttribsOut.couleur = Color;
 
@@ -36,5 +40,5 @@ void main( void )
     // À SUPPRIMER: les lignes suivantes servent seulement à forcer le compilateur à conserver cet attribut
     // Vous ENLEVEREZ cet énoncé inutile!
     if ( tempsDeVieRestant < 0.0 ) { AttribsOut.couleur.rgb += 0.00001*vitesse; AttribsOut.couleur.a += 0.00001; }
-    //if(sign(vitesse.x) < 0.0) AttribsOut.sens *= -1.0;
+
 }
