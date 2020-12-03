@@ -78,7 +78,7 @@ void main()
         }
 
         if( AttribsIn[0].tempsDeVieRestant <= 5.0 ) {
-            AttribsOut.couleur.a = 0.5;
+            AttribsOut.couleur.a = (AttribsIn[0].tempsDeVieRestant)/5.0;
         }
             
         EmitVertex();
