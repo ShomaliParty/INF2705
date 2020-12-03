@@ -75,11 +75,16 @@ void main()
                 num = 3;
             }
             AttribsOut.texCoord.x = ( AttribsOut.texCoord.x + num ) / nlutins;
+            if(AttribsIn[0].sens < 0.0) {
+                AttribsOut.texCoord.x = - AttribsOut.texCoord.x;
+            }
         }
 
-        if( AttribsIn[0].tempsDeVieRestant <= 5.0 ) {
-            AttribsOut.couleur.a = (AttribsIn[0].tempsDeVieRestant)/5.0;
+        if( AttribsIn[0].tempsDeVieRestant <= 3.0 ) {
+            AttribsOut.couleur.a = (AttribsIn[0].tempsDeVieRestant)/3.0;
         }
+
+
             
         EmitVertex();
     }
