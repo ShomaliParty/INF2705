@@ -12,7 +12,7 @@ uniform float tempsDeVieMax;
 in Attribs {
     vec4 couleur;
     float tempsDeVieRestant;
-    //float sens; // du vol (partie 3)
+    float sens; // du vol (partie 3)
     float hauteur; // du vol (partie 3)
 } AttribsIn[];
 
@@ -77,7 +77,9 @@ void main()
             AttribsOut.texCoord.x = ( AttribsOut.texCoord.x + num ) / nlutins;
         }
 
-        // if( tempsDeVieRestant <= 5.0 )
+        if( AttribsIn[0].tempsDeVieRestant <= 5.0 ) {
+            AttribsOut.couleur.a = 0.5;
+        }
             
         EmitVertex();
     }
