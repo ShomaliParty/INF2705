@@ -1,18 +1,30 @@
-Q1: On peut utiliser une atténuation en fonction de la distance, comme prévu
-    dans le modèle d'illumination, afin de produire l'image de droite
-    affichée dans la figure 14. Dites comment vous implanteriez cette
-    atténuation dans les nuanceurs. Quels sont les énoncés que vous
-    ajouteriez ou modifierez ? À quel endroit et dans quel(s) nuanceur(s) ?
-    Votre méthode devrait s'appliquer autant pour l'illumination avec
-    Gouraud ou avec Phong.
+Indice: pour bien répondre à ces deux questions, essayez de voir si votre réponse fonctionne dans votre application. (Pour chacune, ce ne sont que quelques lignes à modifier dans le nuanceur!)
+
+
+Q1: Dans la partie 1, des points de taille fixe sont affichés à l'écran. Leur taille est donnée par la variable gl_PointSize.
+    i) Comment faire pour que la taille d'un point varie de façon inverse à sa distance du plan avant du volume de visualisation, c'est-à-dire qu'il soit plus gros lorsqu'il est plus près de la caméra ?
+
+	Dans le nuanceur de sommets en multipliant la matrice de visualisation par la matrice de modélisation, on se retrouve dans le repère de la caméra, laissant z comme profondeur.
+	En multipliant par le sommet "Vertex", on se retrouve dans le même plan par rapport à ce sommet. Ainsi, gl_Position.z équivaut la distance entre la caméra et le sommet en question.
+	On utilise gl_Position comme référence et on affecte la valeur de gl_PointSize inversement proportionellement à gl_position.z.
+
+    ii) Donnez l'énoncé GLSL que vous utiliseriez pour implanter ceci.
+	
+    
+    	float facteurTaille = 100.0;	// arbitraire
+    	gl_PointSize = gl_in[0].gl_PointSize / gl_Position.z * facteurTaille;
 
 
 
-Q2: Vous avez probablement remarqué que même en demandant un très grand
-    niveau de tessellation, le générateur de tessellation ne produira pas
-    une tessellation plus fine que le niveau maximum donné par la constante
-    GL_MAX_TESS_GEN_LEVEL.  (On peut obtenir la valeur de cette constante
-    avec glGet() et elle doit être au moins 64.)
-    Que doit-on alors faire si on veut, malgré tout, une tessellation deux
-    fois plus fine dans chaque direction?
+Q2: Pour afficher un flocon qui tourne sur lui-même, on a appliqué une matrice de rotation sur les quatre sommets.
+    i) Pourrait-on faire tourner le flocon en appliquant la même matrice de rotation sur les coordonnées de texture plutôt que sur les coordonnées des sommets?
+
+	Bien que nous pouvons toujours observer une rotation, le rendu n'est pas celui cherché.
+
+    ii) Quel problème observerions-nous alors et comment devrait-il être corrigé?
+
+	Nous remarquons que, lors de la rotation, la forme (flocon ou autre) "sort du cadre", c'est-à-dire qu'il disparait temporairement. Nous pouvons voir que la rotation ne se fait plus autour du centre.
+
+    Afin de facilement répondre à cette question, vous pouvez remplacer (temporairement!) l'image du flocon de ce TP par l'image de l'échiquier du TP3.  Si vous appliquez ensuite la matrice de rotation sur les coordonnées de texture plutôt que sur les coordonnées des sommets, vous pourrez alors très bien voir ce qui se passe.
+
 
